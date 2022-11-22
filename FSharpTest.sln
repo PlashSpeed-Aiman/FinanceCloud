@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpTest", "FSharpTest\FSharpTest.fsproj", "{C10EF340-FA2E-4634-BB26-08107596A769}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C10EF340-FA2E-4634-BB26-08107596A769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C10EF340-FA2E-4634-BB26-08107596A769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C10EF340-FA2E-4634-BB26-08107596A769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C10EF340-FA2E-4634-BB26-08107596A769}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E66EACE-5134-4D60-A7B6-55373B6E8DB0}
+	EndGlobalSection
+EndGlobal
