@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\source\\repos\\FSharpTest\\FSharpTest\\FSharpTest.fsproj": {}
+    "C:\\Users\\Aiman\\RiderProjects\\FinanceCloud\\FSharpTest\\FSharpTest.fsproj": {}
   },
   "projects": {
-    "D:\\source\\repos\\FSharpTest\\FSharpTest\\FSharpTest.fsproj": {
+    "C:\\Users\\Aiman\\RiderProjects\\FinanceCloud\\FSharpTest\\FSharpTest.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\source\\repos\\FSharpTest\\FSharpTest\\FSharpTest.fsproj",
+        "projectUniqueName": "C:\\Users\\Aiman\\RiderProjects\\FinanceCloud\\FSharpTest\\FSharpTest.fsproj",
         "projectName": "FSharpTest",
-        "projectPath": "D:\\source\\repos\\FSharpTest\\FSharpTest\\FSharpTest.fsproj",
+        "projectPath": "C:\\Users\\Aiman\\RiderProjects\\FinanceCloud\\FSharpTest\\FSharpTest.fsproj",
         "packagesPath": "C:\\Users\\Aiman\\.nuget\\packages\\",
-        "outputPath": "D:\\source\\repos\\FSharpTest\\FSharpTest\\obj\\",
+        "outputPath": "C:\\Users\\Aiman\\RiderProjects\\FinanceCloud\\FSharpTest\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Aiman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,10 +22,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Program Files\\dotnet\\sdk\\6.0.402\\FSharp\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.devexpress.com/khuDumg6f7zySIeOp3b5O6dcfLd7tZ3bwCkvMaVfQ525zRv8cE/api": {}
+          "C:\\Program Files\\dotnet\\sdk\\6.0.306\\FSharp\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
@@ -42,11 +36,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "FSharp.Charting.Gtk": {
-              "target": "Package",
-              "version": "[2.1.0, )",
-              "generatePathProperty": true
-            },
             "FSharp.Control.Reactive": {
               "target": "Package",
               "version": "[5.0.5, )",
@@ -55,7 +44,12 @@
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[6.0.6, )",
+              "version": "[6.0.5, )",
+              "generatePathProperty": true
+            },
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.0.0, )",
               "generatePathProperty": true
             },
             "System.Data.SQLite": {
@@ -75,8 +69,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -85,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

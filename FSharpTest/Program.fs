@@ -1,6 +1,10 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
 open System
+open System.Collections.Generic
 open System.Data.SQLite
+open System.IO
+open System.Threading.Tasks
+open Google.Cloud.Firestore.V1
 open Microsoft.FSharp.Core
 (*
     Sort by Month, Category, Get Average
@@ -11,8 +15,13 @@ open Microsoft.FSharp.Core
 open System
 open FSharp.Core
 open FSharp.Data
+open Microsoft.FSharp.Reflection
 open XPlot.GoogleCharts
+open Google.Cloud.Firestore
 
+type ('a) FirebaseOperationState =
+    | FirebaseOperationSuccess of 'a
+    | FirebaseOperationFailure of Exception 
 type FinanceCategories =
     | Food
     | Lifestyle
@@ -22,22 +31,60 @@ type ProgOptions =
     |AddEntry
     |ViewEntries
     |ExitProg
+
 type FinanceEntry =
     {EntryName:string;Amount:double;EntryDate:string;EntryMonth:int;EntryYear:int;Category:FinanceCategories}
 
+let asMap (recd:'T) = 
+  [ for p in FSharpType.GetRecordFields(typeof<'T>) ->
+      p.Name, p.GetValue(recd) ]
+  |> Map.ofList
 let getAmount item = item.Amount
-
+//TODO : For syncing with cloud, first try connection, if failed, keep in queue, allow user to sync to cloud explicitly, if success empty queue, if failed, queue is not emptied
 let db_connect () =
     let sqlite_conn = new SQLiteConnection("Data Source= fin.db;Version=3;New=True;Compress=True;")
     sqlite_conn.Open()
     sqlite_conn
-let SendToDatabase  (x:SQLiteConnection) (item:FinanceEntry) :unit  = 
-    
+
+let RetrieveFromDatabase (conn:SQLiteConnection) =
+    let querySql = 
+        "SELECT * FROM finance"
+    use reader = new SQLiteCommand(querySql,conn) |> fun  x  -> x.ExecuteReader()
+    let convertStrToDU text =  
+        match text with 
+            |"Food" -> Food
+            |"Lifestyle" -> Lifestyle
+            |"Utilities" -> Utilities
+            |"Others"|_ -> Others
+    let rec readHelper (reader:SQLiteDataReader) (alist: FinanceEntry list) =
+        match reader.Read() with 
+            |false -> alist
+            |true ->  {EntryName=reader.GetString(0);Amount= (reader.GetDouble 1 ); EntryDate =  (reader.GetString(2));EntryMonth= DateTime.Today.Month;EntryYear= DateTime.Today.Year;Category=(reader.GetString(3) |> convertStrToDU) }::alist |> readHelper reader
+                 
+    let res = readHelper reader []
+    List.iter (fun x -> printfn "%A" x) res 
+    let filteres = List.filter (fun x -> x.Category = Lifestyle) res |> fun x -> [ for elem in x do elem.Amount]
+    printfn "%A MYR is spent on Lifestyle" (List.sum filteres) 
+    ()
+
+let SendToDatabase  (conn:SQLiteConnection) (item:FinanceEntry) :unit  = 
     
     let insertSql = 
-        $"INSERT INTO finance(EntryName, Amount, EntryDate,Category) " + 
+        $"INSERT INTO finance(entry_name, amount, entry_date,category) " + 
         $"""values ("{item.EntryName}",{item.Amount},"{item.EntryDate}","{item.Category}")"""
-    let reader =  new SQLiteCommand(insertSql,x) |> fun cmd -> cmd.ExecuteNonQuery()
+    
+    let reader = new SQLiteCommand(insertSql,conn) |> fun  x  -> x.ExecuteNonQuery() 
+    let input:Map<string,obj> = FSharp.Collections.Map [ ("EntryName", item.EntryName); ("Amount", item.Amount);("EntryDate",item.EntryDate);("EntryMonth",item.EntryMonth);("EntryYear",item.EntryYear);("Category",item.Category.ToString())]
+    let db = FirestoreDb.Create("shining-weft-357007") |> fun db -> db.Collection("finance")
+   
+    let sendHelper  =
+        async{
+          let x = db.AddAsync(input)
+          ()
+        }
+        //TODO : ERROR HANDLING
+    sendHelper  |> Async.Start
+    
     ()
     
 let ProgramSelect () =
@@ -47,7 +94,7 @@ let ProgramSelect () =
         match value with
             |"1" -> AddEntry
             |"2" -> ViewEntries
-            |"3" -> ExitProg
+            |"3"|_ -> ExitProg
     let res = helperfunc value
     res
 
@@ -71,6 +118,7 @@ let AddEntryFunc conn =
 
 [<EntryPoint>]
 let main argv =
+//Please apply the Open Late, Close Early Principle for SQLite Connections
     let conn = db_connect()
     let partial_send = SendToDatabase conn
     let newitem  = { EntryName="1Sauce"
@@ -79,37 +127,18 @@ let main argv =
                      EntryMonth=DateTime.Today.Month
                      EntryYear=DateTime.Today.Year
                      Category = Food }
+    let newmapitem = asMap newitem
     let mutable app_condition = false
     while not app_condition do 
         let res = ProgramSelect()
         match res with
             |AddEntry -> AddEntryFunc conn
-            |ViewEntries|ExitProg -> app_condition <- true
+            |ViewEntries -> RetrieveFromDatabase conn
+            |ExitProg -> app_condition <- true
         () 
+    let _ = conn.Dispose()
     
-    (*
-    let list1 = [newitem.Amount;newitem2.Amount;newitem3.Amount] 
-    *)
-    (*let electionData = 
-        [ "Conservative", 306; "Labour", 258; 
-                                "Liberal Democrat", 57 ]
-    let Bolivia = ["2004/05", 165.; "2005/06", 135.; "2006/07", 157.; "2007/08", 139.; "2008/09", 136.]
-    let Ecuador = ["2004/05", 938.; "2005/06", 1120.; "2006/07", 1167.; "2007/08", 1110.; "2008/09", 691.]
-    let Madagascar = ["2004/05", 522.; "2005/06", 599.; "2006/07", 587.; "2007/08", 615.; "2008/09", 629.]
-    let Average = ["2004/05", 614.6; "2005/06", 682.; "2006/07", 623.; "2007/08", 609.4; "2008/09", 569.6]
-    let series = [ "bars"; "bars"; "bars"; "lines" ]
-    let inputs = [ Bolivia; Ecuador; Madagascar; Average ]
-    let chart2 =
-        list1
-        |> Chart.Bar
-        |> Chart.WithOptions
-            (Options(title = "Coffee Production",
-                    series = [| for typ in series -> Series(typ) |]))
-        |> Chart.WithLabels ["Bolivia"]
-        |> Chart.WithLegend true
-        |> Chart.WithSize (600, 250)
-        |>Chart.Show*)
-    Console.WriteLine newitem
+    printfn "%A" (newmapitem)
     0
 
 
