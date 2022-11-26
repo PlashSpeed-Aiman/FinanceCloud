@@ -30,6 +30,7 @@ type FinanceCategories =
 type ProgOptions =
     |AddEntry
     |ViewEntries
+    |StatsView
     |ExitProg
 
 type FinanceEntry =
@@ -39,12 +40,54 @@ let asMap (recd:'T) =
   [ for p in FSharpType.GetRecordFields(typeof<'T>) ->
       p.Name, p.GetValue(recd) ]
   |> Map.ofList
-let getAmount item = item.Amount
+
 //TODO : For syncing with cloud, first try connection, if failed, keep in queue, allow user to sync to cloud explicitly, if success empty queue, if failed, queue is not emptied
 let db_connect () =
     let sqlite_conn = new SQLiteConnection("Data Source= fin.db;Version=3;New=True;Compress=True;")
     sqlite_conn.Open()
     sqlite_conn
+
+
+let MakeGraph (somelist:FinanceEntry list) =
+    
+    let utilities = List.filter (fun x -> x.Category = Utilities) somelist |> fun x -> [ for elem in x do elem.Amount] |> List.reduce (fun x y -> x + y) |> fun x -> (Utilities.ToString(),x)
+    let food      = List.filter (fun x -> x.Category = Food)      somelist |> fun x -> [ for elem in x do elem.Amount] |> List.reduce (fun x y -> x + y) |> fun x -> (Food.ToString(),x)
+    let lifestyle = List.filter (fun x -> x.Category = Lifestyle) somelist |> fun x -> [ for elem in x do elem.Amount] |> List.reduce (fun x y -> x + y) |> fun x -> (Lifestyle.ToString(),x)   
+    let others    = List.filter (fun x -> x.Category = Others)    somelist |> fun x -> [ for elem in x do elem.Amount] |> List.reduce (fun x y -> x + y) |> fun x -> (Others.ToString(),x)   
+    let data = [
+            utilities
+            food
+            lifestyle
+            others
+            ]
+    
+    async{
+        let chart =
+            data
+            |> Chart.Pie
+            |> Chart.WithTitle "My Daily Activities"
+            |> Chart.WithLegend true
+        let () = chart.Show() 
+        ()
+    } |> Async.Start
+
+    ()
+
+let StatsOverview (somelist:FinanceEntry list)=
+    let list_utilities = List.filter (fun x -> x.Category = Utilities) somelist |> fun x -> [ for elem in x do elem.Amount]
+    let list_food      = List.filter (fun x -> x.Category = Food)      somelist |> fun x -> [ for elem in x do elem.Amount]
+    let list_lifestyle = List.filter (fun x -> x.Category = Lifestyle) somelist |> fun x -> [ for elem in x do elem.Amount]
+    let list_others    = List.filter (fun x -> x.Category = Others)    somelist |> fun x -> [ for elem in x do elem.Amount]
+    let total_list     = [list_others;list_food;list_lifestyle;list_utilities]
+    let total_amount   = total_list |> List.map List.sum |> List.reduce (fun x y -> x + y)
+    printfn "%A MYR is spent on Food" (List.sum list_food) 
+    printfn "%A MYR is spent on Lifestyle" (List.sum list_lifestyle) 
+    printfn "%A MYR is spent on Utilities" (List.sum list_utilities) 
+    printfn "%A MYR is spent on Others" (List.sum list_others)
+    printfn "Total Spent is %A MYR " (total_amount)
+    let _ = MakeGraph somelist
+    ()
+
 
 let RetrieveFromDatabase (conn:SQLiteConnection) =
     let querySql = 
@@ -56,15 +99,18 @@ let RetrieveFromDatabase (conn:SQLiteConnection) =
             |"Lifestyle" -> Lifestyle
             |"Utilities" -> Utilities
             |"Others"|_ -> Others
+    let convertDateTime some_date_time_string = 
+        let result = DateTime.Parse some_date_time_string
+        result
     let rec readHelper (reader:SQLiteDataReader) (alist: FinanceEntry list) =
         match reader.Read() with 
             |false -> alist
-            |true ->  {EntryName=reader.GetString(0);Amount= (reader.GetDouble 1 ); EntryDate =  (reader.GetString(2));EntryMonth= DateTime.Today.Month;EntryYear= DateTime.Today.Year;Category=(reader.GetString(3) |> convertStrToDU) }::alist |> readHelper reader
-                 
+            |true ->  {EntryName=reader.GetString(0);Amount= (reader.GetDouble 1 ); EntryDate =  (reader.GetString(2));EntryMonth= (reader.GetString(2)|> convertDateTime|> fun x-> x.Month);EntryYear= (reader.GetString(2)|> convertDateTime|> fun x-> x.Month);Category=(reader.GetString(3) |> convertStrToDU) }::alist |> readHelper reader
+             
     let res = readHelper reader []
     List.iter (fun x -> printfn "%A" x) res 
-    let filteres = List.filter (fun x -> x.Category = Lifestyle) res |> fun x -> [ for elem in x do elem.Amount]
-    printfn "%A MYR is spent on Lifestyle" (List.sum filteres) 
+    let _ = StatsOverview res 
+
     ()
 
 let SendToDatabase  (conn:SQLiteConnection) (item:FinanceEntry) :unit  = 
@@ -94,7 +140,8 @@ let ProgramSelect () =
         match value with
             |"1" -> AddEntry
             |"2" -> ViewEntries
-            |"3"|_ -> ExitProg
+            |"3" -> StatsView
+            |"4"|_ -> ExitProg
     let res = helperfunc value
     res
 
@@ -119,15 +166,7 @@ let AddEntryFunc conn =
 [<EntryPoint>]
 let main argv =
 //Please apply the Open Late, Close Early Principle for SQLite Connections
-    let conn = db_connect()
-    let partial_send = SendToDatabase conn
-    let newitem  = { EntryName="1Sauce"
-                     Amount=10.50
-                     EntryDate = DateTime.Today.ToShortDateString()
-                     EntryMonth=DateTime.Today.Month
-                     EntryYear=DateTime.Today.Year
-                     Category = Food }
-    let newmapitem = asMap newitem
+    let conn = db_connect ()
     let mutable app_condition = false
     while not app_condition do 
         let res = ProgramSelect()
@@ -135,10 +174,9 @@ let main argv =
             |AddEntry -> AddEntryFunc conn
             |ViewEntries -> RetrieveFromDatabase conn
             |ExitProg -> app_condition <- true
+            |_ -> app_condition <- true
         () 
     let _ = conn.Dispose()
-    
-    printfn "%A" (newmapitem)
     0
 
 
