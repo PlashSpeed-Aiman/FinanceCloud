@@ -16,7 +16,7 @@ open System
 open FSharp.Core
 open FSharp.Data
 open Microsoft.FSharp.Reflection
-open XPlot.GoogleCharts
+open XPlot.Plotly
 open Google.Cloud.Firestore
 
 type ('a) FirebaseOperationState =
@@ -65,12 +65,11 @@ let MakeGraph (somelist:FinanceEntry list) =
         let chart =
             data
             |> Chart.Pie
-            |> Chart.WithTitle "My Daily Activities"
+            |> Chart.WithTitle "Monthly Expenses"
             |> Chart.WithLegend true
-        let () = chart.Show() 
+        let () = chart.Show()
         ()
     } |> Async.Start
-
     ()
 
 let StatsOverview (somelist:FinanceEntry list)=
@@ -105,10 +104,17 @@ let RetrieveFromDatabase (conn:SQLiteConnection) =
     let rec readHelper (reader:SQLiteDataReader) (alist: FinanceEntry list) =
         match reader.Read() with 
             |false -> alist
-            |true ->  {EntryName=reader.GetString(0);Amount= (reader.GetDouble 1 ); EntryDate =  (reader.GetString(2));EntryMonth= (reader.GetString(2)|> convertDateTime|> fun x-> x.Month);EntryYear= (reader.GetString(2)|> convertDateTime|> fun x-> x.Month);Category=(reader.GetString(3) |> convertStrToDU) }::alist |> readHelper reader
+            |true ->  {
+            EntryName=reader.GetString(0);
+            Amount     =  (reader.GetDouble 1 ); 
+            EntryDate  =  (reader.GetString 2 );
+            EntryMonth =  (reader.GetString 2  |> convertDateTime |> fun x-> x.Month);
+            EntryYear  =  (reader.GetString 2  |> convertDateTime |> fun x-> x.Year);
+            Category   =  (reader.GetString 3  |> convertStrToDU) }::alist 
+            |> readHelper reader
              
-    let res = readHelper reader []
-    List.iter (fun x -> printfn "%A" x) res 
+    let res = readHelper reader [] |> List.filter (fun x -> x.EntryMonth = DateTime.Now.Month)
+    List.iter (fun x -> printfn "ENTRY NAME: %A\nAMOUNT: %A\nENTRY DATE: %A\n" x.EntryName x.Amount x.EntryDate) res 
     let _ = StatsOverview res 
 
     ()
@@ -120,7 +126,9 @@ let SendToDatabase  (conn:SQLiteConnection) (item:FinanceEntry) :unit  =
         $"""values ("{item.EntryName}",{item.Amount},"{item.EntryDate}","{item.Category}")"""
     
     let reader = new SQLiteCommand(insertSql,conn) |> fun  x  -> x.ExecuteNonQuery() 
+    
     let input:Map<string,obj> = FSharp.Collections.Map [ ("EntryName", item.EntryName); ("Amount", item.Amount);("EntryDate",item.EntryDate);("EntryMonth",item.EntryMonth);("EntryYear",item.EntryYear);("Category",item.Category.ToString())]
+    
     let db = FirestoreDb.Create("shining-weft-357007") |> fun db -> db.Collection("finance")
    
     let sendHelper  =
@@ -142,8 +150,8 @@ let ProgramSelect () =
             |"2" -> ViewEntries
             |"3" -> StatsView
             |"4"|_ -> ExitProg
-    let res = helperfunc value
-    res
+    let progOp = helperfunc value
+    progOp
 
 let AddEntryFunc conn =
     Console.WriteLine "Insert Entry Name"
@@ -166,6 +174,7 @@ let AddEntryFunc conn =
 [<EntryPoint>]
 let main argv =
 //Please apply the Open Late, Close Early Principle for SQLite Connections
+    let testvar = 3
     let conn = db_connect ()
     let mutable app_condition = false
     while not app_condition do 
