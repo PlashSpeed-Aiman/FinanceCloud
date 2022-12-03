@@ -5,8 +5,11 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharpTest", "FSharpTest\FSharpTest.fsproj", "{C10EF340-FA2E-4634-BB26-08107596A769}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceTerm", "FinanceTerm\FinanceTerm.csproj", "{CD0B7CA4-FB1F-4D87-A691-8EB968943435}"
 EndProject
+=======
+>>>>>>> ceafb79346bbaf2eb5a333b69be675a08c57aac1
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +20,13 @@ Global
 		{C10EF340-FA2E-4634-BB26-08107596A769}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C10EF340-FA2E-4634-BB26-08107596A769}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C10EF340-FA2E-4634-BB26-08107596A769}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{CD0B7CA4-FB1F-4D87-A691-8EB968943435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD0B7CA4-FB1F-4D87-A691-8EB968943435}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD0B7CA4-FB1F-4D87-A691-8EB968943435}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD0B7CA4-FB1F-4D87-A691-8EB968943435}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+>>>>>>> ceafb79346bbaf2eb5a333b69be675a08c57aac1
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
