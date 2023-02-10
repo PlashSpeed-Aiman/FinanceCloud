@@ -136,3 +136,6 @@ C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\bin\Debug\net6.0\Microsoft.
 C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\bin\Debug\net6.0\System.Linq.Async.dll
+C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\bin\Debug\net6.0\XPlot.Plotly.dll
+C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\bin\Debug\net6.0\FsPrettyTable.dll
+C:\Users\Aiman\RiderProjects\FinanceCloud\FSharpTest\obj\Debug\net6.0\FSharpTest.fsproj.CoreCompileInputs.cache

@@ -9,10 +9,12 @@
       "FSharpTest/1.0.0": {
         "dependencies": {
           "FSharp.Control.Reactive": "5.0.5",
-          "FSharp.Core": "6.0.5",
+          "FSharp.Core": "7.0.0",
+          "FsPrettyTable": "0.1.0",
           "Google.Cloud.Firestore": "3.0.0",
           "System.Data.SQLite": "1.0.116",
-          "XPlot.GoogleCharts": "3.0.1"
+          "XPlot.GoogleCharts": "3.0.1",
+          "XPlot.Plotly": "4.0.6"
         },
         "runtime": {
           "FSharpTest.dll": {}
@@ -39,7 +41,7 @@
       },
       "FSharp.Control.Reactive/5.0.5": {
         "dependencies": {
-          "FSharp.Core": "6.0.5",
+          "FSharp.Core": "7.0.0",
           "System.Reactive": "5.0.0"
         },
         "runtime": {
@@ -49,11 +51,11 @@
           }
         }
       },
-      "FSharp.Core/6.0.5": {
+      "FSharp.Core/7.0.0": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.522.27404"
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51310"
           }
         },
         "resources": {
@@ -95,6 +97,14 @@
           },
           "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll": {
             "locale": "zh-Hant"
+          }
+        }
+      },
+      "FsPrettyTable/0.1.0": {
+        "runtime": {
+          "lib/net45/FsPrettyTable.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
           }
         }
       },
@@ -587,7 +597,7 @@
       },
       "XPlot.GoogleCharts/3.0.1": {
         "dependencies": {
-          "FSharp.Core": "6.0.5",
+          "FSharp.Core": "7.0.0",
           "Google.DataTable.Net.Wrapper": "4.0.0",
           "Newtonsoft.Json": "13.0.1"
         },
@@ -595,6 +605,18 @@
           "lib/netstandard2.0/XPlot.GoogleCharts.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "XPlot.Plotly/4.0.6": {
+        "dependencies": {
+          "FSharp.Core": "7.0.0",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/XPlot.Plotly.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       }
@@ -620,12 +642,19 @@
       "path": "fsharp.control.reactive/5.0.5",
       "hashPath": "fsharp.control.reactive.5.0.5.nupkg.sha512"
     },
-    "FSharp.Core/6.0.5": {
+    "FSharp.Core/7.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FwdQVtpj34xt8vKyFUUeNIS+obWlEnSrSW7y1ivRVts/ZsrUsKyOd0bZehgFhWdnB/NBsa9DCWvNFMTO0XDFcg==",
-      "path": "fsharp.core/6.0.5",
-      "hashPath": "fsharp.core.6.0.5.nupkg.sha512"
+      "sha512": "sha512-xPww0dhsH7o373ZNFY1Y08WRsJJUUzqGk0AIUxxUxSJkWqul0UwCBXg6UmqJX76VdiSvvEXn4SYwX8lYQaZzuQ==",
+      "path": "fsharp.core/7.0.0",
+      "hashPath": "fsharp.core.7.0.0.nupkg.sha512"
+    },
+    "FsPrettyTable/0.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JV+fuk6qifJ9VmbD4WlDEavyLcUqlKEdF4H+efjx8aUcD+Ycvjlpquy1mhXaBNGDb3RwJ0sqtMLOU+KNj9gr1A==",
+      "path": "fsprettytable/0.1.0",
+      "hashPath": "fsprettytable.0.1.0.nupkg.sha512"
     },
     "Google.Api.CommonProtos/2.6.0": {
       "type": "package",
@@ -962,6 +991,13 @@
       "sha512": "sha512-NYyPMLKqk3hM59T2hsDGAmBGLOH4ouLNU+UMEAu7vWFfxjA/XKACr/ttvsKoVnfPBWG7t91H6K0wgzbGEoKq1g==",
       "path": "xplot.googlecharts/3.0.1",
       "hashPath": "xplot.googlecharts.3.0.1.nupkg.sha512"
+    },
+    "XPlot.Plotly/4.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5qLab8jB4ZxmRl2z+Me47k5fsMOW0vPiAXpuoYashGUmolP3+xDg1SWsvodsbr+Q6ipcJhp97Cyq8qDzCHFEDA==",
+      "path": "xplot.plotly/4.0.6",
+      "hashPath": "xplot.plotly.4.0.6.nupkg.sha512"
     }
   }
 }

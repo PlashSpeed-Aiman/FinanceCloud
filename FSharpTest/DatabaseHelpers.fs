@@ -8,6 +8,11 @@ let createTransactTable conn =
     let structureCommand = new SQLiteCommand(structureSql, conn)
     let _ = structureCommand.ExecuteNonQuery()
     ()
+let createCommitmentsTable conn = 
+    let structureSql = "CREATE TABLE IF NOT EXISTS commitments(commitment TEXT, amount REAL,date TEXT,note TEXT)"
+    let structureCommand = new SQLiteCommand(structureSql, conn)
+    let _ = structureCommand.ExecuteNonQuery()
+    ()
 let createAccountsTable conn = 
     let structureSql = "CREATE TABLE IF NOT EXISTS accounts(name TEXT, balance REAL)"
     let structureCommand = new SQLiteCommand(structureSql, conn)
@@ -18,8 +23,15 @@ let createFinanceTable conn =
     let structureCommand = new SQLiteCommand(structureSql, conn)
     let _ = structureCommand.ExecuteNonQuery()
     ()
+let createGoalsTable conn = 
+    let structureSql = "CREATE TABLE IF NOT EXISTS goals(id TEXT,goal TEXT, amount REAL, current_amount REAL,note TEXT,completion_rate REAL)"
+    let structureCommand = new SQLiteCommand(structureSql, conn)
+    let _ = structureCommand.ExecuteNonQuery()
+    ()
 let createTableMany conn = 
     let () = createFinanceTable conn  
     let () = createAccountsTable conn
     let () = createTransactTable conn
+    let () = createCommitmentsTable conn
+    let () = createGoalsTable conn
     ()

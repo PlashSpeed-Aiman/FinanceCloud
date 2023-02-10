@@ -5,23 +5,28 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Aiman\.nuget\packages\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Aiman\.nuget\packages\;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.3.0</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.4.0</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\Aiman\.nuget\packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)entityframework\6.4.4\buildTransitive\netcoreapp3.0\EntityFramework.props" Condition="Exists('$(NuGetPackageRoot)entityframework\6.4.4\buildTransitive\netcoreapp3.0\EntityFramework.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\Aiman\.nuget\packages\fsharp.core\6.0.5</PkgFSharp_Core>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\Aiman\.nuget\packages\fsharp.core\7.0.0</PkgFSharp_Core>
+    <PkgXPlot_Plotly Condition=" '$(PkgXPlot_Plotly)' == '' ">C:\Users\Aiman\.nuget\packages\xplot.plotly\4.0.6</PkgXPlot_Plotly>
     <PkgXPlot_GoogleCharts Condition=" '$(PkgXPlot_GoogleCharts)' == '' ">C:\Users\Aiman\.nuget\packages\xplot.googlecharts\3.0.1</PkgXPlot_GoogleCharts>
     <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">C:\Users\Aiman\.nuget\packages\entityframework\6.4.4</PkgEntityFramework>
     <PkgSystem_Data_SQLite_EF6 Condition=" '$(PkgSystem_Data_SQLite_EF6)' == '' ">C:\Users\Aiman\.nuget\packages\system.data.sqlite.ef6\1.0.116</PkgSystem_Data_SQLite_EF6>
     <PkgSystem_Data_SQLite Condition=" '$(PkgSystem_Data_SQLite)' == '' ">C:\Users\Aiman\.nuget\packages\system.data.sqlite\1.0.116</PkgSystem_Data_SQLite>
+    <PkgPlotly_NET Condition=" '$(PkgPlotly_NET)' == '' ">C:\Users\Aiman\.nuget\packages\plotly.net\4.0.0-preview.2</PkgPlotly_NET>
+    <PkgPlotly_NET_ImageExport Condition=" '$(PkgPlotly_NET_ImageExport)' == '' ">C:\Users\Aiman\.nuget\packages\plotly.net.imageexport\3.0.0</PkgPlotly_NET_ImageExport>
     <PkgGoogle_Cloud_Firestore Condition=" '$(PkgGoogle_Cloud_Firestore)' == '' ">C:\Users\Aiman\.nuget\packages\google.cloud.firestore\3.0.0</PkgGoogle_Cloud_Firestore>
+    <PkgFsPrettyTable Condition=" '$(PkgFsPrettyTable)' == '' ">C:\Users\Aiman\.nuget\packages\fsprettytable\0.1.0</PkgFsPrettyTable>
     <PkgFSharp_Control_Reactive Condition=" '$(PkgFSharp_Control_Reactive)' == '' ">C:\Users\Aiman\.nuget\packages\fsharp.control.reactive\5.0.5</PkgFSharp_Control_Reactive>
   </PropertyGroup>
 </Project>
